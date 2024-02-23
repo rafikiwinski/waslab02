@@ -63,6 +63,12 @@ public class WoTServlet extends HttpServlet {
 			ServletInputStream  httpIn  = request.getInputStream();
 			httpIn.readLine(httpInData, 0, max_length_of_data);
 			String body = new String(httpInData);
+			JSONObject myString = new JSONObject(body);
+			String author = myString.getString("author");
+			String text = myString.getString("text");
+			Tweet t = tweetDAO.insertTweet(author, text);
+			JSONObject tw = new JSONObject(t);
+			response.getWriter().println(tw.toString());
 			/*      ^
 		      The String variable body contains the sent (JSON) Data. 
 		      Complete the implementation below.*/

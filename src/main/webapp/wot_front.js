@@ -80,11 +80,18 @@ function getTweets() {
 function tweetHandler() {
 	var author = document.getElementById("tweet_author").value;
 	var text = document.getElementById("tweet_text").value;
-	/*
-	 * TASK #3 -->
-	 */
-	var mes1 = "Someone ({0}) wants to insert a new tweet ('{1}'),\n but this feature is not implemented yet!";
-	alert(mes1.format(author, text));
+
+	req = new XMLHttpRequest();
+	req.open('POST', tweetsURI, /*async*/true);
+	req.onload = function() { 
+		if (req.status == 200) { // 200 OK
+			var jstw = JSON.parse(req.responseText);
+			var tw = getTweetHTML(jstw, "delete");
+			document.getElementById("tweet_list").innerHTML = tw + document.getElementById("tweet_list").innerHTML;
+		}
+	};
+	req.setRequestHeader("Content-Type","application/json");
+	req.send(JSON.stringify({"author": author, "text": text}));
 
 	// clear form fields
 	document.getElementById("tweet_author").value = "";
