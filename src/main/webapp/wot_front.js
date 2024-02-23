@@ -63,10 +63,14 @@ function getTweets() {
 	req.onload = function() {
 		if (req.status == 200) { // 200 OK
 			var tweet_list = req.responseText;
-			/*
-			 * TASK #2 -->
-			 */
-			document.getElementById("tweet_list").innerHTML = tweet_list;
+			var jsonTweets = JSON.parse(tweet_list);
+			var tweet_list2 = "";
+			for(var i = 0; i < jsonTweets.length; i++){
+				var tweet = jsonTweets[i];
+				tweet_list2 += getTweetHTML(tweet, "like");
+			}
+		
+			document.getElementById("tweet_list").innerHTML = tweet_list2;
 		}
 	};
 	req.send(null); 
@@ -88,7 +92,7 @@ function tweetHandler() {
 
 };
 
-//main
+//main 
 function main() {
 	document.getElementById("tweet_submit").onclick = tweetHandler;
 	getTweets();
