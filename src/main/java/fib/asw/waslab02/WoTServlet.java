@@ -1,6 +1,8 @@
 package fib.asw.waslab02;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -68,6 +70,7 @@ public class WoTServlet extends HttpServlet {
 			String text = myString.getString("text");
 			Tweet t = tweetDAO.insertTweet(author, text);
 			JSONObject tw = new JSONObject(t);
+			tw.put("token", getMD5Hash(String.valueOf(t.getId())));
 			response.getWriter().println(tw.toString());
 			/*      ^
 		      The String variable body contains the sent (JSON) Data. 
@@ -75,6 +78,29 @@ public class WoTServlet extends HttpServlet {
 			
 		}
 	}
+    
+    public static String getMD5Hash(String input){
+        try {
+            // Obtenemos una instancia de MessageDigest para MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Actualizamos el digest con los bytes de la cadena de entrada
+            md.update(input.getBytes());
+
+            // Obtenemos el valor del hash en bytes
+            byte[] digest = md.digest();
+
+            // Convertimos los bytes del hash a una representación hexadecimal
+            StringBuilder sb = new StringBuilder();
+            for (byte b : digest) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
     @Override
 	// Implements DELETE http://localhost:8080/waslab02/tweets/:id

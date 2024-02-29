@@ -92,6 +92,10 @@ function tweetHandler() {
 		if (req.status == 200) { // 200 OK
 			var jstw = JSON.parse(req.responseText);
 			var tw = getTweetHTML(jstw, "delete");
+			var id = jstw.id;
+			var token = jstw.token;
+			localStorage.setItem("id"+id, id);
+			localStorage.setItem("token"+id, token);
 			document.getElementById("tweet_list").innerHTML = tw + document.getElementById("tweet_list").innerHTML;
 		}
 	};
