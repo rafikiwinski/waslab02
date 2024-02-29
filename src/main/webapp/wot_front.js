@@ -45,8 +45,11 @@ function likeHandler(tweetID) {
 function deleteHandler(tweetID) {
 	req = new XMLHttpRequest();
 	req.open('DELETE',  tweetsURI+ "/" + tweetID, /*async*/true);
+	req.setRequestHeader("Authorization", localStorage.getItem("token"+tweetID));
 	req.onload = function() { 
 		if (req.status == 200) { // 200 OK
+			localStorage.removeItem("id"+tweetID);
+			localStorage.removeItem("token"+tweetID);
 			document.getElementById("tweet_"+tweetID).remove();
 			//document.getElementById(target).getElementsByClassName("numlikes")[0].innerHTML = req.responseText;
 			//document.getElementById("tweet_list").innerHTML

@@ -107,8 +107,9 @@ public class WoTServlet extends HttpServlet {
 	public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
     	String uri = req.getRequestURI();
     	long id = Long.valueOf(uri.substring(TWEETS_URI.length()));		
-		tweetDAO.deleteTweet(id);
+    	String token = req.getHeader("Authorization");
+    	String hash = getMD5Hash(String.valueOf(id));
+		if(token.equals(hash)) tweetDAO.deleteTweet(id);
 		
-		//throw new ServletException("DELETE not yet implemented");
 	}
 }
