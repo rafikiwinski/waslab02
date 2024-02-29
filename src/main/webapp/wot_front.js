@@ -72,7 +72,8 @@ function getTweets() {
 			var tweet_list2 = "";
 			for(var i = 0; i < jsonTweets.length; i++){
 				var tweet = jsonTweets[i];
-				tweet_list2 += getTweetHTML(tweet, "like");
+				if (localStorage.getItem("id"+tweet.id) == tweet.id) tweet_list2 += getTweetHTML(tweet, "delete");
+				else tweet_list2 += getTweetHTML(tweet, "like");
 			}
 		
 			document.getElementById("tweet_list").innerHTML = tweet_list2;
